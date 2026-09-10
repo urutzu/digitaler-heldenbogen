@@ -12,6 +12,7 @@ import org.w3c.dom.Document;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -89,9 +90,9 @@ public class HeldenbogenManualExporter {
         if (output.getName().endsWith(".html")) {
             HeldExtractor.dumpDocument(getAdditionalInfos(werkzeug), new File(output.getParentFile(), output.getName().replace(".html", ".plugin.xml")));
             String html = new Renderer(getHeldFromPluginApi(werkzeug), bogen, true).render();
-            Files.write(output.toPath(), html.getBytes());
+            Files.write(output.toPath(), html.getBytes(StandardCharsets.UTF_8));
             html = new Renderer(getHeldFromPluginApi(werkzeug), bogen, false).render();
-            Files.write(new File(output.getParentFile(), output.getName().replace(".html", ".full.html")).toPath(), html.getBytes());
+            Files.write(new File(output.getParentFile(), output.getName().replace(".html", ".full.html")).toPath(), html.getBytes(StandardCharsets.UTF_8));
         }
 
         if (creator != null) {

@@ -9,8 +9,10 @@ import helden.plugin.datenplugin.DatenPluginHeldenWerkzeug;
 
 import javax.swing.*;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -162,7 +164,7 @@ public class Exporter {
 
         private void exportNewHtml(DatenPluginHeldenWerkzeug werkzeug, File output) throws IOException {
             String html = new Renderer(getHeldFromPluginApi(werkzeug), "alle_bogen", false).render();
-            try (FileWriter writer = new FileWriter(output)) {
+            try (OutputStreamWriter writer = new OutputStreamWriter(Files.newOutputStream(output.toPath()), StandardCharsets.UTF_8)) {
                 writer.write(html);
             }
         }

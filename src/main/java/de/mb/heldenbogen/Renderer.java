@@ -88,6 +88,7 @@ public class Renderer {
 
         try {
             Configuration cfg = new Configuration(Configuration.VERSION_2_3_34);
+            cfg.setEncoding(Locale.GERMAN, "UTF-8");
             cfg.setClassLoaderForTemplateLoading(getClass().getClassLoader(), "/");
             DefaultObjectWrapper wrapper = new DefaultObjectWrapper(Configuration.VERSION_2_3_34);
             wrapper.setExposeFields(true);

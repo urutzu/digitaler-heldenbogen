@@ -11,10 +11,10 @@ import org.w3c.dom.Document;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
@@ -57,12 +57,21 @@ public class HeldenbogenPlugin implements HeldenDatenPlugin {
             String html = new Renderer(getHeldFromPluginApi(werkzeug), "alle_bogen", false).render();
 
             if (outputHtml != null) {
-                try (FileWriter writer = new FileWriter(outputHtml)) {
+                try (OutputStreamWriter writer = new OutputStreamWriter(Files.newOutputStream(outputHtml.toPath()), StandardCharsets.UTF_8)) {
                     writer.write(html);
                 }
             }
             if (outputPdf != null) {
-                PdfCreator.createSingle(html, outputPdf);
+                try {
+                    PdfCreator.createSingle(html, outputPdf);
+                } catch (UnsupportedClassVersionError e) {
+                    String msg = "Ihre Java-Version ist zu alt - mindestens Java 11 ist erforderlich.";
+                    if (System.getProperty("os.name").toLowerCase().contains("win") || System.getProperty("os.name").toLowerCase().contains("mac")) {
+                        msg += "\nFür Windows und Mac bietet die Helden-Software installer an, die eine aktuelle Java-Version direkt mitbringen.\nhttps://www.helden-software.de/index.php/download";
+                    }
+                    JOptionPane.showMessageDialog(jFrame, msg, "Fehler", JOptionPane.ERROR_MESSAGE);
+                    return null;
+                }
             }
 
             try {
