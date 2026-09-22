@@ -11,7 +11,7 @@
                 <span class="zauber-probe">${z.getProbe()}</span>
                 <span class="zauber-wert">${z.wert}</span>
                 <span class="zauber-infos">
-                    <#list ["spezialisierungen", "zauberdauer", "kosten", "reichweite", "wirkungsdauer", "kontrollwert", "anmerkung"] as what>
+                    <#list ["spezialisierungen", "zauberdauer", "kosten", "reichweite", "wirkungsdauer", "kontrollwert", "anmerkung", "zauberkommentar"] as what>
                         <#if z[what]?has_content>
                             <span class="zauber-info" data-title="${tooltips[what]}"><span class="zauber-info-header">${short.wert(what)}</span>${z[what]}</span>
                         </#if>
