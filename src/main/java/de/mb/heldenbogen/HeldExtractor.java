@@ -450,6 +450,7 @@ public class HeldExtractor {
         z.kontrollwert = getTextContentByTagName(element, "kontrollwert");
         z.mr = getTextContentByTagName(element, "mr");
         z.leittalent = Boolean.parseBoolean(getTextContentByTagName(element, "leittalent"));
+        z.zauberkommentar = getTextContentByTagName(element, "zauberkommentar");
         return z;
     }
 
