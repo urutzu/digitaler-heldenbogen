@@ -11,7 +11,7 @@ public class Held {
     public Map<String, Integer> gp = new HashMap<>();
     public String aspregeneration;
     public String leregeneration;
-    public int wundschwelle;
+    public String wundschwelle;
 
     public String lastEreignisDate;
 

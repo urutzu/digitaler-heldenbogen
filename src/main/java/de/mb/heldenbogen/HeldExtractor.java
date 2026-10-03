@@ -59,7 +59,6 @@ public class HeldExtractor {
         held.gp.put("rest", Integer.parseInt(getTextContentByTagName(gpElement, "rest")));
         held.aspregeneration = getTextContentByTagName(angaben, "aspregeneration");
         held.leregeneration = getTextContentByTagName(angaben, "leregeneration");
-        held.wundschwelle = Integer.parseInt(getTextContentByTagName(angaben, "wundschwelle"));
         NodeList kampfSetNodes = xml.getDocumentElement().getElementsByTagName("kampfset");
         for (int i = 0; i < kampfSetNodes.getLength(); i++) {
             held.kampfSets.add(parseKampfSet((Element) kampfSetNodes.item(i)));
@@ -98,9 +97,29 @@ public class HeldExtractor {
         }
 
         parseEigenschaften(held.eigenschaften, getFirstElementByTagName(xml.getDocumentElement(), "eigenschaften"));
-
+        held.wundschwelle = getWundschwelleString(held);
         held.complete();
         return held;
+    }
+
+    public static String getWundschwelleString(Held held) {
+        int ko = held.eigenschaften.get("Konstitution");
+        int ws = Math.round(0.5f * ko);
+        int ws2 = ko;
+        int ws3 = Math.round(1.5f * ko);
+        for (VorNachteil v : held.vorNachteile) {
+            if (v.name.equals("Glasknochen")) {
+                ws -= 2;
+                ws2 -= 2;
+                ws3 -= 2;
+            } else if (v.name.equals("Eisern")) {
+                ws += 2;
+                ws2 += 2;
+                ws3 += 2;
+            }
+        }
+
+        return String.format("%s/%s/%s", ws, ws2, ws3);
     }
 
     public static void dumpDocument(Document doc, File output) {
